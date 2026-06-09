@@ -2,7 +2,8 @@
     'use strict';
 
     const resourceName = typeof GetParentResourceName === 'function' ? GetParentResourceName() : 'jx-shootingstyles';
-    const menu = document.getElementById('menu');
+
+    const app = document.getElementById('app');
     const panel = document.getElementById('panel');
     const closeButton = document.getElementById('close');
     const stylesContainer = document.getElementById('styles');
@@ -21,10 +22,23 @@
     let isDragging = false;
     let dragStartX = 0;
     let dragStartY = 0;
-    let panelStartX = 0;
-    let panelStartY = 0;
+    let appStartX = 0;
+    let appStartY = 0;
 
     const t = (key, fallback = '') => locale[key] || fallback;
+
+    const hardHide = () => {
+        isOpen = false;
+        isDragging = false;
+        app.classList.remove('is-open');
+        app.setAttribute('aria-hidden', 'true');
+        panel.classList.remove('is-dragging');
+        app.style.left = '50%';
+        app.style.top = '50%';
+        app.style.transform = 'translate(-50%, -50%) scale(0.985)';
+        document.documentElement.style.background = 'transparent';
+        document.body.style.background = 'transparent';
+    };
 
     const post = async (eventName, payload = {}) => {
         try {
@@ -46,14 +60,6 @@
         }
     };
 
-    const initializeClosedState = () => {
-        menu.classList.remove('is-visible');
-        menu.setAttribute('aria-hidden', 'true');
-        panel.style.left = '50%';
-        panel.style.top = '50%';
-        panel.style.transform = 'translate(-50%, -50%)';
-    };
-
     const applyTheme = (theme = {}) => {
         setCssVar('--accent', theme.accent);
         setCssVar('--accent-rgb', theme.accentRgb);
@@ -61,39 +67,31 @@
         setCssVar('--accent-second-rgb', theme.accentSecondRgb);
         setCssVar('--success', theme.success);
         setCssVar('--success-rgb', theme.successRgb);
-        setCssVar('--danger', theme.danger);
-        setCssVar('--danger-rgb', theme.dangerRgb);
     };
 
-    const setOpen = (state) => {
-        isOpen = state;
-        menu.classList.toggle('is-visible', state);
-        menu.setAttribute('aria-hidden', state ? 'false' : 'true');
-    };
-
-    const focusCloseButton = () => {
-        try {
-            closeButton.focus({ preventScroll: true });
-        } catch (_) {
-            closeButton.focus();
-        }
-    };
-
-    const resetPanelPosition = () => {
-        panel.style.left = '50%';
-        panel.style.top = '50%';
-        panel.style.transform = 'translate(-50%, -50%)';
+    const resetPosition = () => {
+        app.style.left = '50%';
+        app.style.top = '50%';
+        app.style.transform = 'translate(-50%, -50%) scale(1)';
     };
 
     const openMenu = () => {
-        resetPanelPosition();
-        setOpen(true);
-        requestAnimationFrame(focusCloseButton);
+        resetPosition();
+        isOpen = true;
+        app.classList.add('is-open');
+        app.setAttribute('aria-hidden', 'false');
+
+        requestAnimationFrame(() => {
+            try {
+                closeButton.focus({ preventScroll: true });
+            } catch (_) {
+                closeButton.focus();
+            }
+        });
     };
 
     const closeMenu = async () => {
-        if (!isOpen && !menu.classList.contains('is-visible')) return;
-        setOpen(false);
+        hardHide();
         await post('exit');
     };
 
@@ -128,20 +126,20 @@
 
         styles.forEach((style) => {
             const node = template.content.firstElementChild.cloneNode(true);
-            const media = node.querySelector('.style-card__media');
-            const image = node.querySelector('.style-card__image');
-            const badge = node.querySelector('.style-card__badge');
+            const imageWrap = node.querySelector('.image-wrap');
+            const image = node.querySelector('.style-image');
+            const badge = node.querySelector('.selected-badge');
 
             node.dataset.style = style.id;
-            node.querySelector('.style-card__title').textContent = style.label || `${t('style_fallback', 'Style')} ${style.id}`;
-            node.querySelector('.style-card__description').textContent = style.description || '';
+            node.querySelector('.style-title').textContent = style.label || `${t('style_fallback', 'Style')} ${style.id}`;
+            node.querySelector('.style-description').textContent = style.description || '';
             badge.textContent = t('selected', 'Applied');
 
             if (style.image) {
                 image.src = style.image;
                 image.alt = style.label || '';
-            } else {
-                media.remove();
+            } else if (imageWrap) {
+                imageWrap.remove();
             }
 
             node.addEventListener('click', () => applyStyle(style.id));
@@ -165,15 +163,15 @@
     };
 
     const startDrag = (event) => {
-        if (event.target.closest('button')) return;
+        if (!isOpen || event.target.closest('button')) return;
 
         isDragging = true;
         dragStartX = event.clientX;
         dragStartY = event.clientY;
 
-        const rect = panel.getBoundingClientRect();
-        panelStartX = rect.left;
-        panelStartY = rect.top;
+        const rect = app.getBoundingClientRect();
+        appStartX = rect.left;
+        appStartY = rect.top;
 
         panel.classList.add('is-dragging');
     };
@@ -181,14 +179,14 @@
     const onDrag = (event) => {
         if (!isDragging) return;
 
-        const nextX = panelStartX + event.clientX - dragStartX;
-        const nextY = panelStartY + event.clientY - dragStartY;
-        const maxX = window.innerWidth - panel.offsetWidth;
-        const maxY = window.innerHeight - panel.offsetHeight;
+        const nextX = appStartX + event.clientX - dragStartX;
+        const nextY = appStartY + event.clientY - dragStartY;
+        const maxX = window.innerWidth - app.offsetWidth;
+        const maxY = window.innerHeight - app.offsetHeight;
 
-        panel.style.left = `${Math.min(Math.max(nextX, 8), Math.max(maxX - 8, 8))}px`;
-        panel.style.top = `${Math.min(Math.max(nextY, 8), Math.max(maxY - 8, 8))}px`;
-        panel.style.transform = 'none';
+        app.style.left = `${Math.min(Math.max(nextX, 8), Math.max(maxX - 8, 8))}px`;
+        app.style.top = `${Math.min(Math.max(nextY, 8), Math.max(maxY - 8, 8))}px`;
+        app.style.transform = 'none';
     };
 
     const stopDrag = () => {
@@ -210,8 +208,8 @@
             return;
         }
 
-        if (data.action === 'closeMenu') {
-            setOpen(false);
+        if (data.action === 'closeMenu' || data.action === 'forceClose') {
+            hardHide();
             return;
         }
 
@@ -225,6 +223,7 @@
     dragHandle.addEventListener('mousedown', startDrag);
     window.addEventListener('mousemove', onDrag);
     window.addEventListener('mouseup', stopDrag);
+    window.addEventListener('blur', stopDrag);
 
     document.addEventListener('keyup', (event) => {
         if (event.key === 'Escape' && isOpen) {
@@ -232,8 +231,10 @@
         }
     });
 
+    window.addEventListener('DOMContentLoaded', hardHide);
+    window.addEventListener('load', () => {
+        if (!isOpen) hardHide();
+    });
 
-    window.addEventListener('DOMContentLoaded', initializeClosedState);
-    window.addEventListener('load', initializeClosedState);
-    initializeClosedState();
+    hardHide();
 })();

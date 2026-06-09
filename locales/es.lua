@@ -4,11 +4,11 @@ Locales.es = {
     ui = {
         eyebrow = 'Postura de arma',
         title = 'Estilos de disparo',
-        subtitle = 'Elige una postura para apuntar y disparar. Se guarda automáticamente si lo tienes activado en la config.',
+        subtitle = 'Elige cómo apunta y dispara tu personaje. El estilo se guarda automáticamente si está activado.',
         close = 'Cerrar',
         close_aria = 'Cerrar menú',
         footer_close = 'ESC para cerrar',
-        drag_hint = 'Arrastra el panel para moverlo',
+        drag_hint = 'Arrastra para mover',
         ready = 'Listo',
         selecting = 'Aplicando...',
         selected = 'Aplicado',
@@ -23,11 +23,11 @@ Locales.es = {
     styles = {
         normal = {
             label = 'Normal',
-            description = 'Vuelve al estilo de disparo por defecto.',
+            description = 'Estilo de disparo por defecto.',
         },
         hillbilly = {
             label = 'Paleto',
-            description = 'Postura más agresiva y descontrolada.',
+            description = 'Postura agresiva y poco controlada.',
         },
         gang = {
             label = 'Pandillero',

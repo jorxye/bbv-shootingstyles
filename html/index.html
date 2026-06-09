@@ -7,41 +7,40 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <main id="menu" class="menu" aria-hidden="true">
-        <section id="panel" class="panel" role="dialog" aria-modal="true" aria-labelledby="menu-title">
-            <div class="panel__shine" aria-hidden="true"></div>
-
-            <header id="drag-handle" class="panel__header">
-                <div class="panel__title-block">
-                    <p id="eyebrow" class="eyebrow"></p>
+    <section id="app" class="app" aria-hidden="true">
+        <div id="panel" class="panel" role="dialog" aria-modal="true" aria-labelledby="menu-title">
+            <header id="drag-handle" class="panel-header">
+                <div class="title-block">
+                    <span id="eyebrow" class="eyebrow"></span>
                     <h1 id="menu-title"></h1>
                     <p id="menu-subtitle" class="subtitle"></p>
                 </div>
 
-                <button id="close" class="icon-button" type="button" aria-label="">×</button>
+                <button id="close" class="close-button" type="button" aria-label="">×</button>
             </header>
 
             <div id="styles" class="styles" aria-live="polite"></div>
 
-            <footer class="panel__footer">
+            <footer class="panel-footer">
                 <span id="footer-close"></span>
                 <span id="footer-hint"></span>
                 <span id="status" class="status-pill"></span>
             </footer>
-        </section>
-    </main>
+        </div>
+    </section>
 
     <template id="style-card-template">
         <button class="style-card" type="button">
-            <span class="style-card__glow" aria-hidden="true"></span>
-            <span class="style-card__media">
-                <img class="style-card__image" alt="" draggable="false">
+            <span class="image-wrap">
+                <img class="style-image" alt="" draggable="false">
             </span>
-            <span class="style-card__content">
-                <span class="style-card__title"></span>
-                <span class="style-card__description"></span>
+
+            <span class="card-info">
+                <span class="style-title"></span>
+                <span class="style-description"></span>
             </span>
-            <span class="style-card__badge"></span>
+
+            <span class="selected-badge"></span>
         </button>
     </template>
 

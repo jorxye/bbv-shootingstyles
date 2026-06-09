@@ -16,13 +16,16 @@ end
 
 local function getNested(tbl, ...)
     local current = tbl
+
     for i = 1, select('#', ...) do
         local key = select(i, ...)
         if type(current) ~= 'table' then
             return nil
         end
+
         current = current[key]
     end
+
     return current
 end
 
@@ -66,6 +69,7 @@ local function requestAnimDict(dict)
     local timeout = GetGameTimer() + 3000
     while not HasAnimDictLoaded(dict) do
         Wait(25)
+
         if GetGameTimer() > timeout then
             debugPrint(('Anim dict timeout: %s'):format(dict))
             return false
@@ -106,6 +110,7 @@ end
 
 local function setPedStyle(ped, styleIndex)
     local style, index = getStyle(styleIndex)
+
     if not style then
         return false
     end
@@ -130,11 +135,7 @@ local function applyPlayerStyle(styleIndex)
 
     stopStyleAnim(ped, previousStyle)
 
-    if not setPedStyle(ped, styleIndex) then
-        return false
-    end
-
-    return true
+    return setPedStyle(ped, styleIndex)
 end
 
 local function buildUiPayload()
@@ -164,17 +165,21 @@ local function buildUiPayload()
     }
 end
 
-local function closeMenu()
-    if not State.menuOpen then
-        return
-    end
-
+local function forceCloseMenu()
     State.menuOpen = false
     SetNuiFocus(false, false)
-    SendNUIMessage({ action = 'closeMenu' })
+    SetNuiFocusKeepInput(false)
+    SendNUIMessage({ action = 'forceClose' })
+end
+
+local function closeMenu()
+    forceCloseMenu()
 end
 
 local function openMenu()
+    forceCloseMenu()
+    Wait(0)
+
     State.menuOpen = true
     SetNuiFocus(true, true)
     SendNUIMessage(buildUiPayload())
@@ -190,7 +195,6 @@ end, false)
 
 RegisterKeyMapping(Config.Command, translate('keybind', 'open_menu') or 'Open shooting styles', 'keyboard', Config.Keybind)
 
-
 exports('OpenMenu', openMenu)
 exports('CloseMenu', closeMenu)
 exports('SetStyle', applyPlayerStyle)
@@ -205,7 +209,7 @@ RegisterNetEvent('jx-shootingstyles:client:setStyle', function(styleIndex)
 end)
 
 RegisterNUICallback('exit', function(_, cb)
-    closeMenu()
+    forceCloseMenu()
     cb({ ok = true })
 end)
 
@@ -220,7 +224,7 @@ RegisterNUICallback('changestyle', function(data, cb)
     local applied = applyPlayerStyle(styleIndex)
 
     if Config.CloseOnSelect then
-        closeMenu()
+        forceCloseMenu()
     else
         SendNUIMessage({ action = 'setSelected', selected = State.currentStyle })
     end
@@ -233,11 +237,17 @@ AddEventHandler('onResourceStop', function(resource)
         return
     end
 
-    SetNuiFocus(false, false)
+    forceCloseMenu()
     stopStyleAnim(PlayerPedId(), Config.ShootingStyles[State.currentStyle])
 end)
 
 CreateThread(function()
+    forceCloseMenu()
+    Wait(250)
+    forceCloseMenu()
+    Wait(750)
+    forceCloseMenu()
+
     while not NetworkIsSessionStarted() do
         Wait(500)
     end

@@ -1,33 +1,35 @@
 # JX Shooting Styles
 
-Fork optimizado y simplificado de **bbv-shootingstyles**.
-
-## Qué incluye
-- Interfaz NUI mejorada y traducible.
-- Locales en `es` y `en`.
-- Estilos configurables desde `config.lua`.
-- Guardado opcional del estilo seleccionado.
-- Comando, keybind y exports.
+Fork optimizado de **bbv-shootingstyles**.
 
 ## Instalación
-1. Coloca la carpeta en `resources/[local]/jx-shootingstyles`.
-2. Añade `ensure jx-shootingstyles` a tu `server.cfg`.
-3. Configura idioma, tecla y estilos en `config.lua` si quieres.
+1. Borra cualquier versión antigua del recurso.
+2. Coloca la carpeta como `jx-shootingstyles`.
+3. Añade en `server.cfg`:
+
+```cfg
+ensure jx-shootingstyles
+```
 
 ## Uso
-- Comando por defecto: `/s_anim`
-- Tecla por defecto: `F5`
+- Comando: `/s_anim`
+- Tecla: `F5`
 
-## Configuración rápida
-- `Config.Language = 'es'` o `'en'`
-- `Config.CloseOnSelect = true/false`
-- `Config.SaveSelectedStyle = true/false`
+## Configuración
+Edita `config.lua`:
+- idioma `es` / `en`
+- tecla
+- colores
+- estilos
+- guardado automático
 
 ## Exports
-- `exports['jx-shootingstyles']:OpenMenu()`
-- `exports['jx-shootingstyles']:CloseMenu()`
-- `exports['jx-shootingstyles']:SetStyle(styleId)`
-- `exports['jx-shootingstyles']:GetCurrentStyle()`
+```lua
+exports['jx-shootingstyles']:OpenMenu()
+exports['jx-shootingstyles']:CloseMenu()
+exports['jx-shootingstyles']:SetStyle(1)
+exports['jx-shootingstyles']:GetCurrentStyle()
+```
 
 ## Créditos
 - Original: BuddyBoyVilla / `bbv-shootingstyles`

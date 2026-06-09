@@ -7,11 +7,9 @@ Config.Language = 'es'
 Config.Debug = false
 
 -- Decor usado para sincronizar el estilo seleccionado con otros jugadores cercanos.
--- Cámbialo solo si otro recurso usa el mismo nombre.
 Config.DecorName = 'jx_gunstyle'
 
 -- Comando y tecla para abrir el menú.
--- Cada jugador puede cambiar la tecla desde los ajustes de keybinds de FiveM.
 Config.Command = 's_anim'
 Config.Keybind = 'F5'
 
@@ -20,7 +18,6 @@ Config.CloseOnSelect = true
 Config.SaveSelectedStyle = true
 
 -- Personalización visual de la interfaz.
--- Puedes cambiar colores sin tocar HTML/CSS.
 Config.Theme = {
     accent = '#a855f7',
     accentRgb = '168, 85, 247',
@@ -28,8 +25,6 @@ Config.Theme = {
     accentSecondRgb = '124, 58, 237',
     success = '#22c55e',
     successRgb = '34, 197, 94',
-    danger = '#ef4444',
-    dangerRgb = '239, 68, 68',
 }
 
 -- Intervalos de los loops. Valores más altos = menor consumo.

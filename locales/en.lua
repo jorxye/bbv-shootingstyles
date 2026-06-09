@@ -4,11 +4,11 @@ Locales.en = {
     ui = {
         eyebrow = 'Weapon stance',
         title = 'Shooting styles',
-        subtitle = 'Choose how your character aims and shoots. The selected stance is saved automatically when enabled in config.',
+        subtitle = 'Choose how your character aims and shoots. The selected style is saved automatically when enabled.',
         close = 'Close',
         close_aria = 'Close menu',
         footer_close = 'ESC to close',
-        drag_hint = 'Drag the panel to move it',
+        drag_hint = 'Drag to move',
         ready = 'Ready',
         selecting = 'Applying...',
         selected = 'Applied',
@@ -23,15 +23,15 @@ Locales.en = {
     styles = {
         normal = {
             label = 'Normal',
-            description = 'Restores the default shooting style.',
+            description = 'Default shooting style.',
         },
         hillbilly = {
             label = 'Hillbilly',
-            description = 'More aggressive and uncontrolled aiming stance.',
+            description = 'Aggressive and uncontrolled stance.',
         },
         gang = {
             label = 'Gang',
-            description = 'Urban one-handed shooting style.',
+            description = 'Urban one-handed style.',
         },
     },
 }
