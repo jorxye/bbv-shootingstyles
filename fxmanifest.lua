@@ -3,14 +3,15 @@ game 'gta5'
 
 name 'jx-shootingstyles'
 author 'JX Store / Fork from BuddyBoyVilla bbv-shootingstyles'
-description 'Standalone shooting styles menu with optimized NUI, configurable styles and safe client-side animation handling.'
-version '1.1.0-fork'
+description 'Standalone shooting styles menu with optimized NUI, locales and configurable styles.'
+version '1.1.1-fork'
 license 'MIT'
 
 lua54 'yes'
 
 client_scripts {
     'config.lua',
+    'locales/*.lua',
     'client/main.lua'
 }
 

@@ -9,6 +9,27 @@ local State = {
     lastPed = 0,
 }
 
+local function getLocale()
+    local lang = Config.Language or 'es'
+    return (Locales and Locales[lang]) or (Locales and Locales.es) or (Locales and Locales.en) or {}
+end
+
+local function getNested(tbl, ...)
+    local current = tbl
+    for i = 1, select('#', ...) do
+        local key = select(i, ...)
+        if type(current) ~= 'table' then
+            return nil
+        end
+        current = current[key]
+    end
+    return current
+end
+
+local function translate(...)
+    return getNested(getLocale(), ...)
+end
+
 local function debugPrint(...)
     if Config.Debug then
         print(('[%s]'):format(RESOURCE_NAME), ...)
@@ -118,19 +139,25 @@ end
 
 local function buildUiPayload()
     local styles = {}
+    local locale = getLocale()
+    local uiLocale = locale.ui or {}
+    local fallbackStyle = uiLocale.style_fallback or 'Style'
 
     for index, style in ipairs(Config.ShootingStyles) do
+        local styleLocale = translate('styles', style.key or tostring(index)) or {}
+
         styles[#styles + 1] = {
             id = index,
-            label = style.label or ('Style %s'):format(index),
-            description = style.description or '',
+            label = styleLocale.label or style.label or ('%s %s'):format(fallbackStyle, index),
+            description = styleLocale.description or style.description or '',
             image = style.image or '',
         }
     end
 
     return {
         action = 'openMenu',
-        locale = Config.Locale,
+        lang = Config.Language or 'es',
+        locale = uiLocale,
         styles = styles,
         selected = State.currentStyle,
     }
@@ -160,7 +187,7 @@ RegisterCommand(Config.Command, function()
     end
 end, false)
 
-RegisterKeyMapping(Config.Command, Config.KeybindDescription, 'keyboard', Config.Keybind)
+RegisterKeyMapping(Config.Command, translate('keybind', 'open_menu') or 'Open shooting styles', 'keyboard', Config.Keybind)
 
 
 exports('OpenMenu', openMenu)

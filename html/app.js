@@ -7,8 +7,10 @@
     const closeButton = document.getElementById('close');
     const stylesContainer = document.getElementById('styles');
     const template = document.getElementById('style-card-template');
+    const eyebrow = document.getElementById('eyebrow');
     const title = document.getElementById('menu-title');
     const subtitle = document.getElementById('menu-subtitle');
+    const footerClose = document.getElementById('footer-close');
     const statusText = document.getElementById('status');
     const dragHandle = document.getElementById('drag-handle');
 
@@ -19,6 +21,8 @@
     let dragStartY = 0;
     let panelStartX = 0;
     let panelStartY = 0;
+
+    const t = (key, fallback = '') => locale[key] || fallback;
 
     const post = async (eventName, payload = {}) => {
         try {
@@ -57,7 +61,7 @@
     const applyStyle = async (styleId) => {
         selectedStyle = Number(styleId);
         markSelected();
-        statusText.textContent = locale.selected || 'Aplicado';
+        statusText.textContent = t('selected', 'Applied');
         await post('changestyle', { style: selectedStyle });
     };
 
@@ -66,17 +70,20 @@
 
         styles.forEach((style) => {
             const node = template.content.firstElementChild.cloneNode(true);
+            const media = node.querySelector('.style-card__media');
             const image = node.querySelector('.style-card__image');
+            const badge = node.querySelector('.style-card__badge');
 
             node.dataset.style = style.id;
-            node.querySelector('.style-card__title').textContent = style.label || `Style ${style.id}`;
+            node.querySelector('.style-card__title').textContent = style.label || `${t('style_fallback', 'Style')} ${style.id}`;
             node.querySelector('.style-card__description').textContent = style.description || '';
+            badge.textContent = t('selected', 'Applied');
 
             if (style.image) {
                 image.src = style.image;
                 image.alt = style.label || '';
             } else {
-                image.remove();
+                media.remove();
             }
 
             node.addEventListener('click', () => applyStyle(style.id));
@@ -84,6 +91,18 @@
         });
 
         markSelected();
+    };
+
+    const applyLocale = (lang) => {
+        document.documentElement.lang = lang || 'es';
+        document.title = t('title', 'Shooting styles');
+        eyebrow.textContent = t('eyebrow', 'Weapon stance');
+        title.textContent = t('title', 'Shooting styles');
+        subtitle.textContent = t('subtitle', 'Choose how your character aims and shoots.');
+        footerClose.textContent = t('footer_close', 'ESC to close');
+        statusText.textContent = t('ready', 'Ready');
+        closeButton.setAttribute('aria-label', t('close_aria', t('close', 'Close')));
+        closeButton.setAttribute('title', t('close', 'Close'));
     };
 
     const startDrag = (event) => {
@@ -124,9 +143,7 @@
         if (data.action === 'openMenu') {
             locale = data.locale || {};
             selectedStyle = data.selected || 1;
-            title.textContent = locale.title || 'Estilos de disparo';
-            subtitle.textContent = locale.subtitle || 'Selecciona cómo apunta y dispara tu personaje.';
-            statusText.textContent = 'Listo';
+            applyLocale(data.lang);
             renderStyles(data.styles || []);
             openMenu();
         }

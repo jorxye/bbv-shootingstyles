@@ -1,58 +1,49 @@
 Config = {}
 
--- Debug only prints small client messages when enabled.
+-- Idioma de la interfaz: 'es' o 'en'.
+Config.Language = 'es'
+
+-- Debug solo imprime mensajes pequeños en cliente cuando está activo.
 Config.Debug = false
 
--- Decor name used to sync the selected style to nearby players.
--- Change it only if another resource already uses the same decorator.
+-- Decor usado para sincronizar el estilo seleccionado con otros jugadores cercanos.
+-- Cámbialo solo si otro recurso usa el mismo nombre.
 Config.DecorName = 'jx_gunstyle'
 
--- Command and keybind used to open the shooting styles menu.
--- Players can change the keybind later from FiveM keybind settings.
+-- Comando y tecla para abrir el menú.
+-- Cada jugador puede cambiar la tecla desde los ajustes de keybinds de FiveM.
 Config.Command = 's_anim'
 Config.Keybind = 'F5'
-Config.KeybindDescription = 'Abrir estilos de disparo'
 
--- Menu behaviour.
+-- Comportamiento del menú.
 Config.CloseOnSelect = true
 Config.SaveSelectedStyle = true
 
--- Loop intervals. Higher values reduce usage while keeping the script responsive.
+-- Intervalos de los loops. Valores más altos = menor consumo.
 Config.LocalAnimTick = 250
 Config.IdleAnimTick = 750
 Config.SyncTick = 2500
 
--- UI text.
-Config.Locale = {
-    title = 'Estilos de disparo',
-    subtitle = 'Selecciona cómo apunta y dispara tu personaje.',
-    reset = 'Restablecer',
-    close = 'Cerrar',
-    selected = 'Aplicado',
-}
-
--- Available styles.
--- override: weapon animation override name used by GTA/FiveM.
--- dict/anim: optional upper-body aiming animation for stronger visual style.
--- image: optional local NUI image shown in the menu.
+-- Estilos disponibles.
+-- key: clave usada para traducir nombre/descripción en locales/*.lua.
+-- override: weapon animation override de GTA/FiveM.
+-- dict/anim: animación opcional para reforzar el estilo visual al apuntar.
+-- image: imagen local dentro de html/.
 Config.ShootingStyles = {
     {
-        label = 'Normal',
-        description = 'Vuelve al estilo de disparo por defecto.',
+        key = 'normal',
         override = 'Default',
         image = 'images/3.png',
     },
     {
-        label = 'Hillbilly',
-        description = 'Postura de apuntado más agresiva y descontrolada.',
+        key = 'hillbilly',
         override = 'Hillbilly',
         dict = 'combat@aim_variations@1h@hillbilly',
         anim = 'aim_variation_a',
         image = 'images/2.png',
     },
     {
-        label = 'Gang',
-        description = 'Estilo urbano a una mano.',
+        key = 'gang',
         override = 'Gang1H',
         dict = 'combat@aim_variations@1h@gang',
         anim = 'aim_variation_a',

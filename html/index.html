@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estilos de disparo</title>
+    <title>JX Shooting Styles</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,18 +11,18 @@
         <section id="panel" class="panel" role="dialog" aria-modal="true" aria-labelledby="menu-title">
             <header id="drag-handle" class="panel__header">
                 <div>
-                    <p class="eyebrow">Weapon stance</p>
-                    <h1 id="menu-title">Estilos de disparo</h1>
-                    <p id="menu-subtitle" class="subtitle">Selecciona cómo apunta y dispara tu personaje.</p>
+                    <p id="eyebrow" class="eyebrow"></p>
+                    <h1 id="menu-title"></h1>
+                    <p id="menu-subtitle" class="subtitle"></p>
                 </div>
-                <button id="close" class="icon-button" type="button" aria-label="Cerrar menú">×</button>
+                <button id="close" class="icon-button" type="button" aria-label="">×</button>
             </header>
 
             <div id="styles" class="styles" aria-live="polite"></div>
 
             <footer class="panel__footer">
-                <span>ESC para cerrar</span>
-                <span id="status">Listo</span>
+                <span id="footer-close"></span>
+                <span id="status"></span>
             </footer>
         </section>
     </main>
@@ -36,7 +36,7 @@
                 <span class="style-card__title"></span>
                 <span class="style-card__description"></span>
             </span>
-            <span class="style-card__badge">Aplicado</span>
+            <span class="style-card__badge"></span>
         </button>
     </template>
 
