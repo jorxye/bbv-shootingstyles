@@ -1,33 +1,26 @@
 # JX Shooting Styles
 
-Fork optimizado de `bbv-shootingstyles` para FiveM. Mantiene la licencia MIT y el crédito original a BuddyBoyVilla.
+Fork optimizado de `bbv-shootingstyles` para FiveM. Mantiene licencia MIT y crédito original.
 
-## Qué hace
+## Incluye
 
-Permite cambiar el estilo de apuntado/disparo del jugador desde una interfaz NUI ligera.
-
-Incluye:
-
-- Standalone, sin ESX/QBCore obligatorio.
-- Interfaz renovada y responsive.
-- Imágenes sin recorte agresivo.
+- Standalone, sin framework obligatorio.
+- Interfaz NUI estética, responsive y configurable.
 - Locales `es` y `en`.
-- Configuración simple en `config.lua`.
-- Guardado opcional del último estilo elegido.
-- Exports y eventos client para radial menus u otros scripts.
+- Imágenes visibles completas, sin recorte agresivo.
+- Guardado opcional del último estilo.
+- Exports y eventos client para integrarlo en menús/radiales.
 
 ## Instalación
 
-1. Mete la carpeta `jx-shootingstyles` en tus resources.
-2. Añade esto al `server.cfg`:
+1. Mete `jx-shootingstyles` en `resources`.
+2. Añade en `server.cfg`:
 
 ```cfg
 ensure jx-shootingstyles
 ```
 
-## Configuración básica
-
-Edita `config.lua`:
+## Config básico
 
 ```lua
 Config.Language = 'es' -- es / en
@@ -37,16 +30,24 @@ Config.CloseOnSelect = true
 Config.SaveSelectedStyle = true
 ```
 
-Los textos están en:
+Los textos están en `locales/es.lua` y `locales/en.lua`.
 
-```txt
-locales/es.lua
-locales/en.lua
+## Tema visual
+
+Puedes cambiar colores en `config.lua`:
+
+```lua
+Config.Theme = {
+    accent = '#a855f7',
+    accentRgb = '168, 85, 247',
+    success = '#22c55e',
+    successRgb = '34, 197, 94',
+}
 ```
 
 ## Añadir estilos
 
-En `config.lua` añade otro bloque dentro de `Config.ShootingStyles`:
+Añade un bloque en `Config.ShootingStyles` y traduce la misma `key` en los locales.
 
 ```lua
 {
@@ -58,21 +59,13 @@ En `config.lua` añade otro bloque dentro de `Config.ShootingStyles`:
 },
 ```
 
-Luego traduce el nombre y descripción en `locales/es.lua` y `locales/en.lua` usando la misma `key`.
-
 ## Uso
-
-Comando por defecto:
 
 ```txt
 /s_anim
 ```
 
-Tecla por defecto:
-
-```txt
-F5
-```
+Tecla por defecto: `F5`.
 
 ## Exports client
 
@@ -93,4 +86,4 @@ TriggerEvent('jx-shootingstyles:client:setStyle', 2)
 
 ## Licencia
 
-Fork basado en `bbv-shootingstyles`, publicado bajo licencia MIT por BuddyBoyVilla. Mantén el archivo `LICENSE` al distribuir el recurso.
+Fork basado en `bbv-shootingstyles`, publicado bajo licencia MIT por BuddyBoyVilla. Mantén `LICENSE` al distribuir el recurso.

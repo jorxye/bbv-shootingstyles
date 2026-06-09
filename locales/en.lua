@@ -4,12 +4,15 @@ Locales.en = {
     ui = {
         eyebrow = 'Weapon stance',
         title = 'Shooting styles',
-        subtitle = 'Choose how your character aims and shoots.',
+        subtitle = 'Choose how your character aims and shoots. The selected stance is saved automatically when enabled in config.',
         close = 'Close',
         close_aria = 'Close menu',
         footer_close = 'ESC to close',
+        drag_hint = 'Drag the panel to move it',
         ready = 'Ready',
+        selecting = 'Applying...',
         selected = 'Applied',
+        error = 'Error',
         style_fallback = 'Style',
     },
 

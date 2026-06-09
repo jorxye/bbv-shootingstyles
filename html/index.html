@@ -9,12 +9,15 @@
 <body>
     <main id="menu" class="menu" aria-hidden="true">
         <section id="panel" class="panel" role="dialog" aria-modal="true" aria-labelledby="menu-title">
+            <div class="panel__shine" aria-hidden="true"></div>
+
             <header id="drag-handle" class="panel__header">
-                <div>
+                <div class="panel__title-block">
                     <p id="eyebrow" class="eyebrow"></p>
                     <h1 id="menu-title"></h1>
                     <p id="menu-subtitle" class="subtitle"></p>
                 </div>
+
                 <button id="close" class="icon-button" type="button" aria-label="">×</button>
             </header>
 
@@ -22,13 +25,15 @@
 
             <footer class="panel__footer">
                 <span id="footer-close"></span>
-                <span id="status"></span>
+                <span id="footer-hint"></span>
+                <span id="status" class="status-pill"></span>
             </footer>
         </section>
     </main>
 
     <template id="style-card-template">
         <button class="style-card" type="button">
+            <span class="style-card__glow" aria-hidden="true"></span>
             <span class="style-card__media">
                 <img class="style-card__image" alt="" draggable="false">
             </span>

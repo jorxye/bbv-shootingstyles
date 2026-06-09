@@ -158,6 +158,7 @@ local function buildUiPayload()
         action = 'openMenu',
         lang = Config.Language or 'es',
         locale = uiLocale,
+        theme = Config.Theme or {},
         styles = styles,
         selected = State.currentStyle,
     }

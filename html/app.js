@@ -11,11 +11,13 @@
     const title = document.getElementById('menu-title');
     const subtitle = document.getElementById('menu-subtitle');
     const footerClose = document.getElementById('footer-close');
+    const footerHint = document.getElementById('footer-hint');
     const statusText = document.getElementById('status');
     const dragHandle = document.getElementById('drag-handle');
 
     let selectedStyle = 1;
     let locale = {};
+    let isOpen = false;
     let isDragging = false;
     let dragStartX = 0;
     let dragStartY = 0;
@@ -38,15 +40,45 @@
         }
     };
 
+    const setCssVar = (name, value) => {
+        if (typeof value === 'string' && value.trim().length > 0) {
+            document.documentElement.style.setProperty(name, value.trim());
+        }
+    };
+
+    const applyTheme = (theme = {}) => {
+        setCssVar('--accent', theme.accent);
+        setCssVar('--accent-rgb', theme.accentRgb);
+        setCssVar('--accent-second', theme.accentSecond);
+        setCssVar('--accent-second-rgb', theme.accentSecondRgb);
+        setCssVar('--success', theme.success);
+        setCssVar('--success-rgb', theme.successRgb);
+        setCssVar('--danger', theme.danger);
+        setCssVar('--danger-rgb', theme.dangerRgb);
+    };
+
+    const setOpen = (state) => {
+        isOpen = state;
+        menu.classList.toggle('is-visible', state);
+        menu.setAttribute('aria-hidden', state ? 'false' : 'true');
+    };
+
+    const focusCloseButton = () => {
+        try {
+            closeButton.focus({ preventScroll: true });
+        } catch (_) {
+            closeButton.focus();
+        }
+    };
+
     const openMenu = () => {
-        menu.classList.add('is-visible');
-        menu.setAttribute('aria-hidden', 'false');
-        closeButton.focus({ preventScroll: true });
+        setOpen(true);
+        requestAnimationFrame(focusCloseButton);
     };
 
     const closeMenu = async () => {
-        menu.classList.remove('is-visible');
-        menu.setAttribute('aria-hidden', 'true');
+        if (!isOpen && !menu.classList.contains('is-visible')) return;
+        setOpen(false);
         await post('exit');
     };
 
@@ -59,10 +91,21 @@
     };
 
     const applyStyle = async (styleId) => {
+        const previousStyle = selectedStyle;
         selectedStyle = Number(styleId);
         markSelected();
+        statusText.textContent = t('selecting', 'Applying...');
+
+        const result = await post('changestyle', { style: selectedStyle });
+
+        if (result && result.ok === false) {
+            selectedStyle = previousStyle;
+            markSelected();
+            statusText.textContent = t('error', 'Error');
+            return;
+        }
+
         statusText.textContent = t('selected', 'Applied');
-        await post('changestyle', { style: selectedStyle });
     };
 
     const renderStyles = (styles) => {
@@ -100,6 +143,7 @@
         title.textContent = t('title', 'Shooting styles');
         subtitle.textContent = t('subtitle', 'Choose how your character aims and shoots.');
         footerClose.textContent = t('footer_close', 'ESC to close');
+        footerHint.textContent = t('drag_hint', 'Drag to move');
         statusText.textContent = t('ready', 'Ready');
         closeButton.setAttribute('aria-label', t('close_aria', t('close', 'Close')));
         closeButton.setAttribute('title', t('close', 'Close'));
@@ -133,6 +177,7 @@
     };
 
     const stopDrag = () => {
+        if (!isDragging) return;
         isDragging = false;
         panel.classList.remove('is-dragging');
     };
@@ -143,14 +188,16 @@
         if (data.action === 'openMenu') {
             locale = data.locale || {};
             selectedStyle = data.selected || 1;
+            applyTheme(data.theme || {});
             applyLocale(data.lang);
             renderStyles(data.styles || []);
             openMenu();
+            return;
         }
 
         if (data.action === 'closeMenu') {
-            menu.classList.remove('is-visible');
-            menu.setAttribute('aria-hidden', 'true');
+            setOpen(false);
+            return;
         }
 
         if (data.action === 'setSelected') {
@@ -165,7 +212,7 @@
     window.addEventListener('mouseup', stopDrag);
 
     document.addEventListener('keyup', (event) => {
-        if (event.key === 'Escape' && menu.classList.contains('is-visible')) {
+        if (event.key === 'Escape' && isOpen) {
             closeMenu();
         }
     });
