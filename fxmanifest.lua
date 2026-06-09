@@ -1,20 +1,24 @@
 fx_version 'cerulean'
 game 'gta5'
 
-description 'bbv-shootingstyles'
-version '1.0.0'
+name 'jx-shootingstyles'
+author 'JX Store / Fork from BuddyBoyVilla bbv-shootingstyles'
+description 'Standalone shooting styles menu with optimized NUI, configurable styles and safe client-side animation handling.'
+version '1.1.0-fork'
+license 'MIT'
+
+lua54 'yes'
 
 client_scripts {
-    'main.lua',
+    'config.lua',
+    'client/main.lua'
 }
 
-ui_page('html/index.html')
-      
+ui_page 'html/index.html'
+
 files {
     'html/index.html',
     'html/app.js',
     'html/style.css',
     'html/images/*.png'
 }
-
-lua54 'yes'
