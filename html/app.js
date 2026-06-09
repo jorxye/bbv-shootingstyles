@@ -46,6 +46,14 @@
         }
     };
 
+    const initializeClosedState = () => {
+        menu.classList.remove('is-visible');
+        menu.setAttribute('aria-hidden', 'true');
+        panel.style.left = '50%';
+        panel.style.top = '50%';
+        panel.style.transform = 'translate(-50%, -50%)';
+    };
+
     const applyTheme = (theme = {}) => {
         setCssVar('--accent', theme.accent);
         setCssVar('--accent-rgb', theme.accentRgb);
@@ -223,4 +231,9 @@
             closeMenu();
         }
     });
+
+
+    window.addEventListener('DOMContentLoaded', initializeClosedState);
+    window.addEventListener('load', initializeClosedState);
+    initializeClosedState();
 })();
