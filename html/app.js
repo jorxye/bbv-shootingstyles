@@ -71,7 +71,14 @@
         }
     };
 
+    const resetPanelPosition = () => {
+        panel.style.left = '50%';
+        panel.style.top = '50%';
+        panel.style.transform = 'translate(-50%, -50%)';
+    };
+
     const openMenu = () => {
+        resetPanelPosition();
         setOpen(true);
         requestAnimationFrame(focusCloseButton);
     };

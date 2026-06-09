@@ -4,7 +4,7 @@ game 'gta5'
 name 'jx-shootingstyles'
 author 'JX Store / Fork from BuddyBoyVilla bbv-shootingstyles'
 description 'Standalone shooting styles menu with optimized NUI, locales and configurable styles.'
-version '1.1.2-fork'
+version '1.1.3-fork'
 license 'MIT'
 
 lua54 'yes'
